@@ -1,0 +1,19 @@
+.history{
+  flex: 1;
+  /* position: fixed; */
+  top: 12vh;
+  width: 21vw;
+  height: 80vh;
+  border-radius: 10px 10px 10px 10px;
+  
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
+
+.newChat{
+  background-color: #542ABA;
+  color: #FFC5B2;
+}
+

@@ -1,0 +1,14 @@
+.chat_footer{
+  position: fixed;
+  bottom: 1vh;
+  left: 2vw;
+  right: 3vw;
+  width: 96%;
+  border-top: 1px solid #FFC5B2;
+  opacity: 0.5;
+}
+
+
+
+
+

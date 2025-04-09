@@ -1,0 +1,13 @@
+.bannersSB{
+  /* position: fixed; */
+  /* top: 12vh;
+  right: 1vw; */
+  /* width: 21vw; */
+  flex: 1;
+  height: 80vh;
+  border-radius: 10px 10px 10px 10px;
+}
+
+.banner{
+  background-color: #542ABA;
+}

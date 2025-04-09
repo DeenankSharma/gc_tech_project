@@ -1,0 +1,12 @@
+.chat{
+  flex: 2.5;
+  /* position: fixed; */
+  top: 12vh;
+  width: 21vw;
+  height: 80vh;
+  border-radius: 10px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  
+}
