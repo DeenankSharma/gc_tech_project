@@ -1,6 +1,6 @@
 .chat_header{
-  background-color: #542ABA;
-  color: #FFC5B2;
+  background-color: var(--color-neutral-900);
+  color: #814bff;
   display: flex;
   flex-direction: row;
   width: 99.8%;
@@ -8,4 +8,27 @@
   align-items: center;
   /* font-family: ; */
   border-radius: 10px 10px 10px 10px; 
+  font-family: "Gilroy-Bold", sans-serif;
+  font-weight:bold ;
+}
+
+span{
+  color: white;
+}
+
+.white_only{
+  padding-right: 5px;
+  font-family: "Gilroy", sans-serif;
+  color: white;
+  cursor: pointer;
+}
+
+.white_only:hover{
+  color: #814bff;
+  transition: all 0.3s ease-in-out;
+}
+
+.username{
+  font-family: "Gilroy", sans-serif;
+  
 }

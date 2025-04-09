@@ -6,7 +6,20 @@
 @import "tw-animate-css";
 @import "../public/styles/ChatSection.css";
 
+@font-face {
+  font-family: 'Gilroy';
+  src: local("Gilroy"), url("./fonts/Gilroy-Regular.ttf") format("truetype");
+}
 
+@font-face {
+  font-family: 'GilroyBold';
+  src: local("GilroyBold"), url("./fonts/Gilroy-Bold.ttf") format("truetype");
+}
+
+p{
+  font-family: "Gilroy", sans-serif;
+  /* font-weight: bold; */
+}
 
 html{
   height: 100vh;

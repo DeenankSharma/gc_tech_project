@@ -14,6 +14,20 @@
 
 .newChat{
   background-color: #542ABA;
-  color: #FFC5B2;
+  color: white;
+  font-family: "Gilroy", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
 }
+
+.newChat:hover{
+  background-color: #814bff;
+  transition: all 0.3s ease-in-out;
+}
+
+h2, h3{
+  font-family: "Gilroy", sans-serif;
+  font-weight: bold;
+}
+
 

@@ -1,3 +1,5 @@
+import { HistoryItem } from "./types/types";
+
 export const sportCategories = [
   {
     id: 'football',
@@ -47,4 +49,17 @@ export const sportCategories = [
     description: 'NHL, international tournaments and highlights',
     icon: '🏒'
   }
+];
+
+export const historyItems: HistoryItem[] = [
+  { id: 1, title: "Travel recommendations", time: "2 hours ago" },
+  { id: 2, title: "Recipe ideas", time: "Yesterday" },
+  { id: 3, title: "Coding help", time: "3 days ago" },
+  { id: 4, title: "Book suggestions", time: "Last week" },
+];
+
+export const banners = [
+  { id: "1", type: "info", title: "Welcome", message: "Welcome to our platform!" },
+  { id: "2", type: "promo", title: "Discount", message: "Get 20% off on your next purchase.", actionText: "Shop Now" },
+  { id: "3", type: "update", title: "System Update", message: "Scheduled maintenance at midnight." },
 ];

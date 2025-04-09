@@ -11,3 +11,15 @@
 .banner{
   background-color: #542ABA;
 }
+
+.clear_all{
+  color: white;
+  font-family: "Gilroy", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.clear_all:hover{
+  color: #814bff;
+  transition: all 0.3s ease-in-out;
+}

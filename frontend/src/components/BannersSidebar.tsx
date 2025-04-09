@@ -37,23 +37,6 @@ export const BannersSidebar: React.FC = () => {
     setBanners(banners.filter(banner => banner.id !== bannerId));
   };
 
-  // Map banner types to appropriate colors for ExpandableBanner
-  const getBannerColor = (type: string) => {
-    switch (type) {
-      case "info":
-        return "bg-blue-900/20";
-      case "warning":
-        return "bg-yellow-900/20";
-      case "promo":
-        return "bg-purple-900/20";
-      case "update":
-        return "bg-green-900/20";
-      default:
-        return "bg-neutral-800";
-    }
-  };
-
-
   return (
     <div id="bannersSB" className="bannersSB flex flex-col bg-neutral-900 p-4 space-y-4 overflow-auto">
       <div className="flex justify-between items-center mb-2">
@@ -64,7 +47,7 @@ export const BannersSidebar: React.FC = () => {
         {banners.length > 0 && (
           <button 
 
-            className="cursor-pointer text-sm font-bold text-neutral-400 hover:text-white transition-colors"
+            className="clear_all cursor-pointer text-sm font-bold text-neutral-400 hover:text-white transition-colors"
             onClick={() => setBanners([])}
           >
             Clear all
@@ -74,7 +57,7 @@ export const BannersSidebar: React.FC = () => {
       
       {banners.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-40 text-neutral-500">
-          <Bell size={32} className="mb-2 opacity-50" />
+          <Bell size={20} className="mb-2 opacity-50" />
           <p>No notifications</p>
         </div>
       ) : (
@@ -88,15 +71,9 @@ export const BannersSidebar: React.FC = () => {
                 <ExpandableBanner
                   title={banner.title}
                   description={banner.message}
-                  color="#542ABA"
-                  icon="star"
+                
                 />
-                <button 
-                  className="absolute top-4 right-4 text-neutral-400 hover:text-white"
-                  onClick={() => handleCloseBanner(banner.id)}
-                >
-                  <X size={16} />
-                </button>
+                
               </div>
             </div>
           ))}

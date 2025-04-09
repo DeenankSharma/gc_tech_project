@@ -26,7 +26,7 @@ export default function Preferences() {
   };
 
   return (
-    <div style={{"height":"95vh"}} className="bg-neutral-900 rounded-xl text-gray-100 p-6 mb-6 scrollable  overflow-y-auto">
+    <div style={{"height":"95vh"}} className="bg-gradient-to-b from-purple-900 to-black bg-neutral-900 rounded-xl text-gray-100 p-6 mb-6 scrollable mt-2 pt-10 overflow-y-auto">
       <div className="max-w-4xl mx-auto mb-8">
         <h1 className="text-3xl font-bold mb-2">Game Preferences</h1>
         <p className="text-gray-400">Select the sports you'd like to follow for personalized updates and content</p>
