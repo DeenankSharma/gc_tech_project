@@ -24,3 +24,9 @@ export interface ChatBubbleProps {
   isUser: boolean;
   timestamp?: string;
 }
+
+
+export type PreferenceContextType = {
+  preference: boolean|null;
+  setPreference: (value: boolean|null) => void;
+};

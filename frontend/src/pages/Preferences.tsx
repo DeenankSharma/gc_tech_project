@@ -1,14 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Check, Info } from 'lucide-react';
 import { sportCategories } from '../constants.ts';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth0, User } from '@auth0/auth0-react';
+import { usePreference } from '../hooks/preferenceContext.tsx';
 
 
 
 export default function Preferences() {
+
   const navigate = useNavigate();
   const [selectedSports, setSelectedSports] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
+  const {user,getAccessTokenSilently,isAuthenticated} = useAuth0();
+  const {preference,setPreference} = usePreference();
+  
+  async function fetchPreferences(user:User | null) {
+    try {
+      const token = await getAccessTokenSilently();
+      console.log("Token:", token);
+      console.log("Running fetchPreferences function")
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/protected/signed_in`, 
+        {withCredentials: true,
+        headers: { email: user?.email , Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching preferences:', error);
+    }
+  }
+
 
   const toggleSport = (sportId: string) => {
     setSelectedSports(prev => 
@@ -18,12 +40,80 @@ export default function Preferences() {
     );
   };
 
-  const savePreferences = () => {
-    console.log('Saved preferences:', selectedSports);
-    setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 6000);
-    navigate('/p'); 
+  const savePreferences = async () => {
+    try {
+
+      const token = await getAccessTokenSilently();
+      
+      console.log("Token:", token);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/protected/save_prefs`,
+        { preferences: selectedSports },
+        {
+          headers: {
+            email: user?.email,
+            Authorization: `Bearer ${token}`
+          },
+          withCredentials: true
+        }
+      );
+
+      if(response.status === 200) {
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+          setPreference(true);
+          localStorage.setItem('preferences', JSON.stringify(selectedSports));
+          navigate("/chat");
+        }, 2000);
+
+      } else {
+        console.error("Failed to save preferences:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error saving preferences:", error);
+      throw error;
+    }
   };
+
+
+  useEffect(() => {
+    console.log("pyaaz kachori khaani hai")
+    console.log(isAuthenticated)
+    if(isAuthenticated === true && preference === null){
+      console.log("User is authenticated and preferences are null, fetching preferences.");
+      const response = fetchPreferences(user!);
+      console.log("Response:", response);
+      response.then((data) => {
+        console.log("Response:", data);
+        if (data.length === 0) {
+
+          console.log("No preferences found, redirecting to preferences page.");
+          setPreference(false)
+          navigate('/preferences');
+
+        } else {
+          console.log("Preferences found:", data);
+          console.log("Preferences found:", data);
+          localStorage.setItem('preferences', JSON.stringify(data['preferences']));
+          setPreference(true);
+          navigate('/chat');
+
+        }
+      });
+    }else if(isAuthenticated === true && preference === false){
+      console.log("User is authenticated but preferences are not set, redirecting to preferences page.");
+      navigate('/preferences');
+    } else if(isAuthenticated === true && preference === true){
+      console.log("User is authenticated and preferences are set, redirecting to chat page.");
+      navigate('/chat');
+    }
+    else{
+      console.log("User is not authenticated, redirecting to auth page.");
+      navigate('/');
+    }
+  }, []);
+
 
   return (
     <div style={{"height":"95vh"}} className="bg-gradient-to-b from-purple-900 to-black bg-neutral-900 rounded-xl text-gray-100 p-6 mb-6 scrollable mt-2 pt-10 overflow-y-auto">

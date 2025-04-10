@@ -4,7 +4,10 @@ import Header from "../components/Header.tsx";
 import BannersSidebar from "../components/BannersSidebar.tsx";
 import { ChatSection } from "../components/ChatSection.tsx";
 
+
 export const ChatPage = () => {
+
+
   return (
     <>
     <Header />

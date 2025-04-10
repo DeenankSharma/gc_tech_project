@@ -1,8 +1,14 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { usePreference } from '../hooks/preferenceContext';
+import { useNavigate } from 'react-router-dom';
+
 
 export const AuthPage: React.FC = () => {
-  const { loginWithRedirect } = useAuth0();
+
+  const {preference}=usePreference();
+  const { loginWithRedirect,isAuthenticated } = useAuth0();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center justify-center mt-2 rounded-lg">
       <div className="max-w-4xl w-full text-center">
@@ -15,12 +21,18 @@ export const AuthPage: React.FC = () => {
         </p>
         
         <div className="relative mb-16">
-          <button
+          {isAuthenticated === true && preference === null ?<button
+            className="cursor-pointer relative bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105 hover:bg-purple-500"
+            onClick={() => loginWithRedirect()}
+          >
+            Signing In...
+          </button>:<button
             className="cursor-pointer relative bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105 hover:bg-purple-500"
             onClick={() => loginWithRedirect()}
           >
             Sign In
-          </button>
+          </button>}
+          
         </div>
       
         
@@ -35,4 +47,4 @@ export const AuthPage: React.FC = () => {
   );
 };
 
-// Helper function to render sport icons
+

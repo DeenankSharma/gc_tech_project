@@ -3,22 +3,21 @@ import { ChatPage } from "../pages/ChatPage.tsx";
 import  { AuthPage }  from "../pages/AuthBanner.tsx";
 import Preferences from "../pages/Preferences.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
+import { usePreference } from "../hooks/preferenceContext.tsx";
+import { Navigate } from "react-router-dom";
 
 export const Routes_ = () => {
-  const {isAuthenticated,user} = useAuth0()
-  
-  if(isAuthenticated){
-    console.log("User is authenticated")
-    console.log(user)
-  }
+
+  const {isAuthenticated} = useAuth0()
+  const {preference} = usePreference()
+
   return (
     <BrowserRouter> 
     <Routes>
-      {/* <Route path="/" element={isAuthenticated ? <ChatPage /> : <AuthPage/>} /> */}
-      <Route path="/" element={<Preferences/>}/>
-      <Route path="/chat" element={isAuthenticated ? <ChatPage /> : <AuthPage />} />
-      <Route path="/preferences" element={isAuthenticated ? <Preferences /> : <AuthPage/>} />
-      <Route path="/login" element={isAuthenticated ? <ChatPage/> : <AuthPage />} />
+      <Route path="/" element={isAuthenticated ? <Navigate to="/login"/> : <AuthPage />} />
+      <Route path="/chat" element={isAuthenticated  ? <ChatPage /> : <AuthPage />} />
+      <Route path="/preferences" element={!isAuthenticated ?  <AuthPage/>:!preference || preference==null ? <Preferences/>:<ChatPage/>} />
+      <Route path="/login" element={!isAuthenticated ? <AuthPage/>: preference==true ? <ChatPage/> : <Preferences/> } /> 
     </Routes>
     </BrowserRouter>)
 }
