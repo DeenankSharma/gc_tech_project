@@ -95,7 +95,8 @@ export default function Preferences() {
         } else {
           console.log("Preferences found:", data);
           console.log("Preferences found:", data);
-          localStorage.setItem('preferences', JSON.stringify(data['preferences']));
+          console.log(JSON.stringify(data));
+          localStorage.setItem('preferences', JSON.stringify(data));
           setPreference(true);
           navigate('/chat');
 
