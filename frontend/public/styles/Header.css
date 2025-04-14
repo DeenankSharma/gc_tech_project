@@ -1,0 +1,11 @@
+.chat_header{
+  background-color: #542ABA;
+  color: #FFC5B2;
+  display: flex;
+  flex-direction: row;
+  width: 99.8%;
+  justify-content: space-between;
+  align-items: center;
+  /* font-family: ; */
+  border-radius: 10px 10px 10px 10px; 
+}

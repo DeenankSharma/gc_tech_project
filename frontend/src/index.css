@@ -1,1 +1,14 @@
 @import "../public/styles/HomePage.css";
+@import "tailwindcss";
+@import "../public/styles/Header.css";
+@import "../public/styles/Footer.css";
+
+html{
+  height: 100vh;
+}
+
+body{
+  
+  padding: 1%;
+  height: 100vh;
+}

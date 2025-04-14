@@ -1,6 +1,6 @@
 
 import { MongoClient,ServerApiVersion } from "mongodb";
-import { mongodb_uri } from "../constants.ts";
+import { mongodb_uri } from "../../constants.ts";
 
 const client = new MongoClient(mongodb_uri, {
   serverApi: {
