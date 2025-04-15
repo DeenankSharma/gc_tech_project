@@ -5,7 +5,7 @@ import warnings
 
 from datetime import datetime
 
-from sports_agents.crew import  SportsChatbotCrew
+from crew import  SportsChatbotCrew
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
