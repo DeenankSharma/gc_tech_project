@@ -4,7 +4,7 @@ fetch_player_info:
     recent performance metrics, biographical details, and relevant historical achievements.
   agent: sports_data_collector
   expected_input:
-    format: >
+    format: > 
       {
         "player_name": "string",
         "sport": "string",
@@ -50,6 +50,8 @@ fetch_player_info:
   context_needed:
     - User preferences for favorite players/teams
     - Sport-specific statistical relevance
+
+
 
 live_match_updates:
   description: >
@@ -226,3 +228,24 @@ cricket_tournament_standings:
     - Tournament format and rules
     - Historical tournament performance
     - Team composition and key players
+
+
+structure_player_query:
+  description: >
+    Convert natural language queries about players into structured format for statistical analysis.
+  agent: input_processor
+  expected_input:
+    format: "string"  # Raw natural language input
+  expected_output:
+    format: >
+      {
+        "player_name": "string",
+        "sport": "string",
+        "specific_stats": ["string"],
+        "time_period": "string"
+      }
+  validation_rules:
+    - required_fields: ["player_name", "sport"]
+    - allowed_sports: ["cricket", "football", "basketball", "tennis"]
+  tools_required:
+    - SchemaValidatorTool
