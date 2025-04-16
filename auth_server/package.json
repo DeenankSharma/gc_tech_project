@@ -3,6 +3,11 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "start": "bun run index.ts",
+    "dev": "nodemon --watch index.ts --exec bun run index.ts",
+    "test": "bun test"
+  },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
     "@types/bun": "latest",
@@ -25,6 +30,7 @@
     "express-oauth2-jwt-bearer": "^1.6.1",
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.2",
+    "nodemon": "^3.1.9",
     "request": "^2.88.2"
   }
 }

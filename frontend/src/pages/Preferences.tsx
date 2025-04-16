@@ -25,6 +25,7 @@ export default function Preferences() {
         {withCredentials: true,
         headers: { email: user?.email , Authorization: `Bearer ${token}` },
       });
+      console.log("luuuund lele")
       return response.data;
     } catch (error) {
       console.error('Error fetching preferences:', error);
