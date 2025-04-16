@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 // Import routes
 app.use('/', unprotectedRoutes);  
-app.use('/protected',jwtCheck,protectedRoutes);
+app.use('/protected',protectedRoutes);
 
 app.listen(port, () => {
   console.log(`Auth server is running on port ${port}`);

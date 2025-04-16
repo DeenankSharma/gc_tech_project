@@ -374,7 +374,7 @@ def get_cricket_player_info(player_name: str) -> Optional[Dict[str, str]]:
         player_info = extract_player_details(player_soup)
         
         return player_info
-        
+        s
     except Exception as e:
         print(f"Error getting player info: {e}")
         return None

@@ -1,6 +1,6 @@
 from crewai import LLM,Agent, Crew, Task, Process
 from crewai.project import CrewBase, agent,task, crew, after_kickoff
-from crewai_tools import WebsiteSearchTool,SerplyWebSearchTool,BraveSearchTool
+from crewai_tools import WebsiteSearchTool,SerplyWebSearchTool
 
 @CrewBase
 class SportsChatbotCrew:
@@ -14,8 +14,10 @@ class SportsChatbotCrew:
             return Agent(
                 config=self.agents_config['sports_data_collector'],
                 verbose=True,
-                tools=[WebsiteSearchTool,SerplyWebSearchTool,BraveSearchTool],
-                llm='gemini/gemini-1.5-pro'
+                # tools=[WebsiteSearchTool,SerplyWebSearchTool,BraveSearchTool],
+                llm='gemini/gemini-1.5-pro',
+                tools=[SerplyWebSearchTool()]
+                
             )
             
     @agent 
@@ -24,20 +26,24 @@ class SportsChatbotCrew:
             config=self.agents_config['input_processor'],
             llm=LLM('gemini/gemini-1.5-pro',temperature=0),
             verbose=True,
+            
         )
         
     @task
     def structure_player_query(self) -> Task:
         return Task(
-            config=self.agents_config['structure_player_query']
+            config=self.tasks_config['structure_player_query'],
+            expected_output="Properly formatted JSON string with player query parameters",
+            agent=self.input_processor()
         )
     
     @task
     def fetch_player_info_task(self) -> Task:
         return Task(
-            config=self.agents_config['fetch_player_info'],
-            context=["structure_player_query"]
-        )
+            config=self.tasks_config['fetch_player_info'],
+            agent=self.sports_data_collector(),  # Explicitly set agent instance
+            context=[self.structure_player_query()]
+    )
         
     @after_kickoff
     def after_kickoff_function(self):
