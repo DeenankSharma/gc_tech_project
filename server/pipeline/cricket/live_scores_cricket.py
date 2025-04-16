@@ -29,14 +29,12 @@ def live_sports_data_json(website):
     return livedata
 
 def scrape_cricbuzz(website_url, refresh_interval):
-    indexed_set = set() 
+    with open('scraped_live_cricket.jsonl', 'w') as f:
+        f.write('')
 
     while True:
         jsonDataSet = live_sports_data_json(website_url)
         for dataEntry in jsonDataSet:
-            dataEntryStr = json.dumps(dataEntry, sort_keys=True)
-            if dataEntryStr in indexed_set:
-                continue
                             
             url = website_url
             data = dataEntry
@@ -45,7 +43,6 @@ def scrape_cricbuzz(website_url, refresh_interval):
                 "timestamp": time.time(),
             }
             
-            indexed_set.add(dataEntryStr)
             yield {"url": url, "data": data, "metadata": dict(metadata)}
 
         time.sleep(refresh_interval)
