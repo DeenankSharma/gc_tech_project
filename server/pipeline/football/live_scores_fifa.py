@@ -23,8 +23,6 @@ def live_sports_data_json(website):
     with open("html_dom.html", "w") as f:
         f.write(dom)
 
-    driver.quit()
-
     soup = BeautifulSoup(dom, "html.parser")
     cards = soup.find_all('div', class_='ScoreboardScoreCell pa4 FIFA.WORLDQ.AFC soccer ScoreboardScoreCell--post ScoreboardScoreCell--tabletPlus')
     
