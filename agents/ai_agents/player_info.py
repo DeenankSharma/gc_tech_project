@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
+from langchain_community import tools
 
 
 def configure_chrome_driver() -> webdriver.Chrome:
@@ -445,11 +446,8 @@ def run_scraper(query: str, target_domain: str = "wikipedia") -> Dict[str, Any]:
         
         # Extract career statistics
         result['career_statistics'] = extract_career_statistics(soup)
-        
-        
-    
-    return result
 
+    return result
 
 if __name__ == "__main__":
     # Example usage
