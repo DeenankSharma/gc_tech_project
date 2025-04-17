@@ -52,10 +52,10 @@ export const sportCategories = [
 ];
 
 export const historyItems: HistoryItem[] = [
-  { id: 1, title: "Travel recommendations", time: "2 hours ago" },
-  { id: 2, title: "Recipe ideas", time: "Yesterday" },
-  { id: 3, title: "Coding help", time: "3 days ago" },
-  { id: 4, title: "Book suggestions", time: "Last week" },
+  { id: 1, title: "Points table of IPL", time: "2 hours ago" },
+  { id: 2, title: "Highest Score of an individual in IPl", time: "Yesterday" },
+  // { id: 3, title: "Coding help", time: "3 days ago" },
+  // { id: 4, title: "Book suggestions", time: "Last week" },
 ];
 
 export const banners = [

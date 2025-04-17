@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../public/styles/BannersSidebar.css";
-import { Bell, X } from "lucide-react";
+import { Bell } from "lucide-react";
 import { Banner } from "@/types/types";
 import { ExpandableBanner } from "../components/Banner.tsx";
 
@@ -9,20 +9,20 @@ export const BannersSidebar: React.FC = () => {
     {
       id: "banner1",
       type: "promo",
-      title: "Spring Sale",
-      message: "Enjoy 20% off on all premium features until April 30th!",
+      title: "SRH vs MI",
+      message: "Get live updates on the match between SRH and MI.",
     },
     {
       id: "banner2",
       type: "update",
-      title: "New Version Available",
-      message: "Update to version 2.4.1 for enhanced security features.",
+      title: "Karachi vs Quetta",
+      message: "Catch the live action of Karachi vs Quetta.",
     },
     {
       id: "banner3",
       type: "warning",
-      title: "Scheduled Maintenance",
-      message: "Our services will be unavailable on April 15th from 2AM-4AM EST.",
+      title: "Reaction of Preity Zinta on PBKS win",
+      message: "Preity Zinta shares her thoughts on PBKS's recent victory.",
     },
     {
       id: "banner4",
@@ -33,9 +33,9 @@ export const BannersSidebar: React.FC = () => {
     }
   ]);
 
-  const handleCloseBanner = (bannerId: string) => {
-    setBanners(banners.filter(banner => banner.id !== bannerId));
-  };
+  // const handleCloseBanner = (bannerId: string) => {
+  //   setBanners(banners.filter(banner => banner.id !== bannerId));
+  // };
 
   return (
     <div id="bannersSB" className="bannersSB flex flex-col bg-neutral-900 p-4 space-y-4 overflow-auto">
