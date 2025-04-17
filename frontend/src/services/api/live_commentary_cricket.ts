@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '@/constants';
+import { API_BASE_URL } from '../../constants';
 
 const live_commentary_cricket=async ()=>{
     try {

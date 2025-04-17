@@ -7,6 +7,7 @@ import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import ChatBubble from "./ChatBubble";
 import supabase from "../utils/supabase";
+import gemini from "../services/llm/gemini";
 
 interface Message {
   message: string;
@@ -47,22 +48,22 @@ export const ChatSection = () => {
     setButtonDisabled(true);
 
     try {
-      const token = await getAccessTokenSilently();
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/query`,
-        { query: query },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const botMessage: Message = {
-        message: response.data.answer || "Fetched response!",
+      // const token = await getAccessTokenSilently();
+      // const response = await axios.post(
+      //   `${import.meta.env.VITE_BACKEND_URL}/query`,
+      //   { query: query },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+      const result =await gemini(query);
+      const llmMessage:Message={
+        message: result,
         isUser: false,
-        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
-      setCurrentMessages((prev) => [...prev, botMessage]);
+      setCurrentMessages((prev) => [...prev, llmMessage]);
     } catch (error) {
       const errorMessage: Message = {
         message: "Error fetching response!",

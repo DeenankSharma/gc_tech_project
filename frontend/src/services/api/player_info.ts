@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '@/constants';
+import { API_BASE_URL } from '../../constants';
 
 const player_info=async (player_name:string)=>{
     try {

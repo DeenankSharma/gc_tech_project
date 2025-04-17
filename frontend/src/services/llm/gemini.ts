@@ -1,4 +1,4 @@
-import { GEMINI_API_KEY } from "@/constants";
+import { GEMINI_API_KEY } from "../../constants";
 import { GoogleGenAI } from "@google/genai";
 import live_scores_cricket from "../api/live_scores_cricket";
 import live_scores_football from "../api/live_scores_football";
