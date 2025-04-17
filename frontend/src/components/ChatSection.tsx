@@ -75,7 +75,7 @@ export const ChatSection = ({ historyMessages }: ChatSectionProps) => {
       }
     } catch (error) {
       const errorMessage: Message = {
-        message: "Error fetching response!",
+        message: `Error fetching response! Error: ${error}`,
         isUser: false,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };

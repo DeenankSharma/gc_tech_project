@@ -1,5 +1,6 @@
 from flask import Flask, jsonify,request
 from flask_cors import CORS
+from flask_cors import CORS
 import subprocess
 import atexit
 import os
@@ -17,6 +18,7 @@ processes = {}
 
 supabase_url = os.getenv('SUPABASE_URL')
 supabase_anon_key = os.getenv('SUPABASE_ANON_KEY')
+# client:Client = create_client(supabase_url, supabase_anon_key)
 # client:Client = create_client(supabase_url, supabase_anon_key)
 
 def start_pipeline(name, script_path):
@@ -174,5 +176,6 @@ def get_all_chats():
 
 
 if __name__ == '__main__':
+    start_all_pipelines()  
     start_all_pipelines()  
     app.run(debug=True)

@@ -68,7 +68,16 @@ const gemini=async (query:string) =>{
     const formatted = formatPlayerData(result);
     return formatted
     // return JSON.parse(result);
+    // console.log(result);
+    // console.log(typeof result); 
+    // const res= await beautify(result)
+    // console.log(res)
+    const formatted = formatPlayerData(result);
+    return formatted
+    // return JSON.parse(result);
   }else{
+    const result=response.text?.split("-")[1]
+    return result?result:""
     const result=response.text?.split("-")[1]
     return result?result:""
   }
