@@ -5,36 +5,12 @@ import { Banner } from "@/types/types";
 import { ExpandableBanner } from "../components/Banner.tsx";
 
 export const BannersSidebar: React.FC = () => {
-  const [banners, setBanners] = useState<Banner[]>([
-    {
-      id: "banner1",
-      type: "promo",
-      title: "Spring Sale",
-      message: "Enjoy 20% off on all premium features until April 30th!",
-    },
-    {
-      id: "banner2",
-      type: "update",
-      title: "New Version Available",
-      message: "Update to version 2.4.1 for enhanced security features.",
-    },
-    {
-      id: "banner3",
-      type: "warning",
-      title: "Scheduled Maintenance",
-      message: "Our services will be unavailable on April 15th from 2AM-4AM EST.",
-    },
-    {
-      id: "banner4",
-      type: "info",
-      title: "Product Tour",
-      message: "Discover new features with our interactive product tour.",
-      actionText: "Start Tour"
-    }
+  const [banners, setBanners] = useState<Banner[]|null>([
+   
   ]);
 
   const handleCloseBanner = (bannerId: string) => {
-    setBanners(banners.filter(banner => banner.id !== bannerId));
+    setBanners(banners!.filter(banner => banner.id !== bannerId));
   };
 
   return (
@@ -44,7 +20,7 @@ export const BannersSidebar: React.FC = () => {
           <Bell size={20} className="mr-2" />
           Top Picks
         </h2>
-        {banners.length > 0 && (
+        {banners!.length > 0 && (
           <button 
 
             className="clear_all cursor-pointer text-sm font-bold text-neutral-400 hover:text-white transition-colors"
@@ -55,14 +31,14 @@ export const BannersSidebar: React.FC = () => {
         )}
       </div>
       
-      {banners.length === 0 ? (
+      {banners!.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-40 text-neutral-500">
           <Bell size={20} className="mb-2 opacity-50" />
           <p>No notifications</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {banners.map((banner) => (
+          {banners!.map((banner) => (
             <div key={banner.id} className="relative">
               {banner.isNew && (
                 <span className="absolute -top-1 -right-1 z-10 bg-red-500 rounded-full w-3 h-3"></span>
