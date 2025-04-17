@@ -8,12 +8,9 @@ import { useState, useRef, useEffect } from "react";
 import ChatBubble from "./ChatBubble";
 import supabase from "../utils/supabase";
 import gemini from "../services/llm/gemini";
+import { Message } from "@/types/types";
 
-interface Message {
-  message: string;
-  isUser: boolean;
-  timestamp?: string;
-}
+
 
 export const ChatSection = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -60,13 +57,13 @@ export const ChatSection = () => {
       // );
       const result =await gemini(query);
       const llmMessage:Message={
-        message: result,
+        message: JSON.stringify(result),
         isUser: false,
       };
       setCurrentMessages((prev) => [...prev, llmMessage]);
     } catch (error) {
       const errorMessage: Message = {
-        message: "Error fetching response!",
+        message: `Error fetching response! Error: ${error}`,
         isUser: false,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };

@@ -6,14 +6,14 @@ import { cn } from "../lib/utils.ts";
 import "../../public/styles/HistorySidebar.css"
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import { HistorySidebarProps } from "@/types/types.ts";
+import { HistoryEntry, HistorySidebarProps } from "@/types/types.ts";
 
 export const HistorySidebar:  React.FC<HistorySidebarProps>  = (props:HistorySidebarProps) => {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-  const [history, setHistory] = useState<[any]|null>(null);
+  const [history, setHistory] = useState<HistoryEntry[]|null>(null);
   const {user, getAccessTokenSilently} = useAuth0();
   
-  async function getHistory(){
+  const getHistory=async()=>{
     try {
       const token = await getAccessTokenSilently();
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetch_history`, {
@@ -24,7 +24,8 @@ export const HistorySidebar:  React.FC<HistorySidebarProps>  = (props:HistorySid
           email: user?.email
         }
       });
-      setHistory(response.data);
+      // setHistory(response.data);
+      setHistory([])
     } catch (error) {
       console.error("Error fetching history:", error);
     }
@@ -49,8 +50,8 @@ export const HistorySidebar:  React.FC<HistorySidebarProps>  = (props:HistorySid
         </Button>
       </div>
       
-      <div className="flex flex-col space-y-2 flex-grow overflow-auto">
-        {history?.map((item) => (
+      {(history!=null)?(<div className="flex flex-col space-y-2 flex-grow overflow-auto">
+        {history.map((item:{id:number,title:string}) => (
           <Card
             key={item.id}
             className={cn(
@@ -63,11 +64,11 @@ export const HistorySidebar:  React.FC<HistorySidebarProps>  = (props:HistorySid
             onClick={()=>props.func_to_fetch_History(item.id)}
             onMouseLeave={() => setHoveredItem(null)}
           >
-            <h3 className="text-l p-0 m-0">{item.title}</h3>
+            <h3 className="text-l p-0 m-0">{item.title!}</h3>
            
           </Card>
         ))}
-      </div>
+      </div>):<></>}
       
       <Button 
         className="w-full newChat mt-4  py-5"

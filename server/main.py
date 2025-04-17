@@ -1,4 +1,5 @@
 from flask import Flask, jsonify,request
+from flask_cors import CORS
 import subprocess
 import atexit
 import os
@@ -9,7 +10,7 @@ from scrapers.agent import player_info_api
 from speech_to_text.speech_to_text import speech_to_text_api
 load_dotenv()
 app = Flask(__name__)
-
+CORS(app)
 processes = {}
 
 supabase_url = os.getenv('SUPABASE_URL')
@@ -84,5 +85,5 @@ def speech_to_text():
         return jsonify({"error":f"Could not convert speech to text. Error:{e}"}), 400
            
 if __name__ == '__main__':
-    # start_all_pipelines()  
+    start_all_pipelines()  
     app.run(debug=True)
