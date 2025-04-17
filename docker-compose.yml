@@ -27,7 +27,9 @@ services:
     env_file:
       - ./frontend/.env
   auth:
-    image: authimg
+    build:
+      context: ./auth_server
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     networks:
