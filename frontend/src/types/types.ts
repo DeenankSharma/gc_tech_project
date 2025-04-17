@@ -30,3 +30,7 @@ export type PreferenceContextType = {
   preference: boolean|null;
   setPreference: (value: boolean|null) => void;
 };
+
+export interface HistorySidebarProps {
+  func_to_fetch_History: (id: number) => Promise<any>;
+}
