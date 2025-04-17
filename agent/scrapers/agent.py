@@ -34,7 +34,7 @@ def configure_chrome_driver() -> webdriver.Chrome:
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-infobars")
     chrome_options.add_argument("--disable-extensions")
-    # chrome_options.add_argument("--headless")  # Uncomment for headless operation
+    chrome_options.add_argument("--headless")  # Uncomment for headless operation
     
     # Anti-detection settings
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
