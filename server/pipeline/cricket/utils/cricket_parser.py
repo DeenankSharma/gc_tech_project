@@ -86,7 +86,8 @@ def parse_cricket_matches(data_array):
         
         # Check if match is completed or upcoming
         if len(score_matches) >= 2:
-            status = "completed"
+            # Initially set status as ongoing
+            status = "ongoing"
             
             # Team 1 info
             team1_short = score_matches[0].group(1)
@@ -100,16 +101,48 @@ def parse_cricket_matches(data_array):
             team2_wickets = int(score_matches[1].group(3)) if score_matches[1].group(3) else None
             team2_overs = float(score_matches[1].group(4))
             
-            # Extract full team names and result
+            # Check if result is explicitly mentioned - this is the most reliable sign of completion
             result_pattern = r'([A-Za-z ]+) won by ([0-9]+ (?:runs|wkts))'
             result_match = re.search(result_pattern, match_data)
             
             if result_match:
+                status = "completed"
                 winner_name = result_match.group(1)
                 margin = result_match.group(2)
                 winning_method = "runs" if "runs" in margin else "wickets"
+            else:
+                # No explicit result, determine status based on cricket rules
                 
-                # Determine full team names
+                # Case 1: Team 2 has successfully chased the target
+                if team2_score > team1_score:
+                    status = "completed"
+                    winner_name = get_full_team_name(team2_short)
+                    margin = f"{10 - team2_wickets if team2_wickets is not None else 'unknown'} wkts"
+                    winning_method = "wickets"
+                
+                # Case 2: Team 2 has played full 20 overs but couldn't reach the target
+                elif team2_overs >= 20.0:
+                    status = "completed"
+                    winner_name = get_full_team_name(team1_short)
+                    margin = f"{team1_score - team2_score} runs"
+                    winning_method = "runs"
+                
+                # Case 3: Team 2 has lost all wickets
+                elif team2_wickets == 10:
+                    status = "completed"
+                    winner_name = get_full_team_name(team1_short)
+                    margin = f"{team1_score - team2_score} runs"
+                    winning_method = "runs"
+                
+                # If none of the above, the match is still ongoing
+                else:
+                    status = "ongoing"
+                    winner_name = "TBD"
+                    margin = "TBD"
+                    winning_method = "TBD"
+            
+            # Determine full team names
+            if status == "completed" and result_match:
                 if winner_name in match_data.split(str(match_number)):
                     team1_name = winner_name
                     # Try to extract team2 name from the match data
@@ -124,9 +157,11 @@ def parse_cricket_matches(data_array):
                 # If we can't extract result, use placeholders
                 team1_name = get_full_team_name(team1_short)
                 team2_name = get_full_team_name(team2_short)
-                winner_name = None
-                margin = None
-                winning_method = None
+                
+                if status != "completed":
+                    winner_name = "TBD"
+                    margin = "TBD"
+                    winning_method = "TBD"
             
             # Extract links
             links = re.findall(r'fantasy|table|schedule|points table', match_data.lower())
@@ -156,7 +191,7 @@ def parse_cricket_matches(data_array):
                     "winner": winner_name,
                     "margin": margin,
                     "winningMethod": winning_method
-                },
+                } if status == "completed" else None,
                 "links": links
             }
         else:
@@ -253,6 +288,16 @@ def extract_team_name(text, short_name):
         return "Rajasthan Royals"
     elif short_name == "MS":
         return "Multan Sultans"
+    elif short_name == "MI":
+        return "Mumbai Indians"
+    elif short_name == "RCB":
+        return "Royal Challengers Bangalore"
+    elif short_name == "SRH":
+        return "Sunrisers Hyderabad"
+    elif short_name == "GT":
+        return "Gujarat Titans"
+    elif short_name == "QG":
+        return "Quetta Gladiators"
     return f"Unknown Team ({short_name})"
 
 def get_full_team_name(short_name):

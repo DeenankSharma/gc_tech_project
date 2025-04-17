@@ -1,5 +1,9 @@
 import requests
+import json
+import time
 from bs4 import BeautifulSoup
+import pathway as pw
+from pathway.io.python import ConnectorSubject
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from smolagents import tool
@@ -29,6 +33,9 @@ def fetch_live_commentary_urls(website):
         "https://www.cricbuzz.com" + card.get('href') for card in cards
     ]
     return active_urls
+
+# actieveUrls = fetch_live_commentary_urls(website)
+# print("active urls: ", actieveUrls)
 
 def fetch_commentary(website):
     """

@@ -3,6 +3,7 @@ __pycache__/
 .DS_Store
 
 venv
+vnv 
 
 *.mp3
 *.mp4
@@ -13,3 +14,5 @@ venv
 *.txt
 *.csv
 *.webm
+
+*.venv

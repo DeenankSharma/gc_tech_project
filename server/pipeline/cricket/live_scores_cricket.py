@@ -376,7 +376,6 @@ def scrape_cricbuzz(website_url, refresh_interval):
                 "timestamp": time.time(),
             }
             
-            indexed_set.add(dataEntryStr)
             yield {"url": url, "data": data, "metadata": dict(metadata)}
         
         time.sleep(refresh_interval)

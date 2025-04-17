@@ -43,9 +43,13 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
           </div>
 
           {/* Message Content - Using break-words to handle long content */}
-          <div className="text-sm leading-relaxed text-gray-700 dark:text-gray-300 prose dark:prose-invert max-w-none break-words">
-            {message}
-          </div>
+          <div
+  className="text-sm leading-relaxed text-gray-700 dark:text-gray-300 prose dark:prose-invert max-w-none break-words"
+  dangerouslySetInnerHTML={{
+    __html: message.replace(/\\n/g, "<br/>"), // Replace literal '\n' with <br />
+  }}
+/>
+
         </div>
 
         {/* Copy Button - Using flex-shrink-0 to prevent it from shrinking */}

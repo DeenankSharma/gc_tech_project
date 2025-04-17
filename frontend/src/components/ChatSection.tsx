@@ -8,35 +8,40 @@ import { useState, useRef, useEffect } from "react";
 import ChatBubble from "./ChatBubble";
 import supabase from "../utils/supabase";
 import gemini from "../services/llm/gemini";
-
 interface Message {
   message: string;
   isUser: boolean;
   timestamp?: string;
 }
-
-export const ChatSection = () => {
+interface ChatSectionProps {
+  historyMessages?: Message[]|null;
+  clearChat?: () => void;
+}
+export const ChatSection = ({ historyMessages }: ChatSectionProps) => {
   const { getAccessTokenSilently } = useAuth0();
   const [query, setQuery] = useState<string>("");
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [, setLoading] = useState<boolean>(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [isRecording, setIsRecording] = useState<boolean>(false);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [url, setUrl] = useState<string>("");
+  const [, setAudioBlob] = useState<Blob | null>(null);
+  const [, setUrl] = useState<string>("");
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [currentMessages]);
-
+  // Load history messages when they change
+  useEffect(() => {
+    if (historyMessages && historyMessages.length > 0) {
+      setCurrentMessages(historyMessages);
+    }
+  }, [historyMessages]);
   async function messageSend() {
     if (!query.trim()) return;
-
     const userMessage: Message = {
       message: query,
       isUser: true,
@@ -46,11 +51,10 @@ export const ChatSection = () => {
     setQuery("");
     setLoading(true);
     setButtonDisabled(true);
-
     try {
       // const token = await getAccessTokenSilently();
       // const response = await axios.post(
-      //   `${import.meta.env.VITE_BACKEND_URL}/query`,
+      //   `${import.meta.env.VITE_BACKEND_BASE_URL}/query`,
       //   { query: query },
       //   {
       //     headers: {
@@ -58,12 +62,17 @@ export const ChatSection = () => {
       //     },
       //   }
       // );
-      const result =await gemini(query);
-      const llmMessage:Message={
+      const result = await gemini(query);
+      const llmMessage: Message = {
         message: result,
         isUser: false,
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
       setCurrentMessages((prev) => [...prev, llmMessage]);
+      // Save conversation if it's the first message
+      if (currentMessages.length === 0) {
+        saveConversationTitle(query);
+      }
     } catch (error) {
       const errorMessage: Message = {
         message: "Error fetching response!",
@@ -78,32 +87,48 @@ export const ChatSection = () => {
       }, 5000);
     }
   }
-
+  const saveConversationTitle = async (firstQuery: string) => {
+    try {
+      const title = firstQuery.split(" ").slice(0, 5).join(" ");
+      const token = await getAccessTokenSilently();
+      const { user } = useAuth0();
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/api/titles`,
+        {
+          email: user?.email,
+          title: title
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error saving conversation title:", error);
+    }
+  };
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !buttonDisabled && !isRecording) {
       messageSend();
     }
   };
-
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
-
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunksRef.current.push(event.data);
         }
       };
-
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
         setAudioBlob(audioBlob);
         await handleAudioStop(audioBlob);
       };
-
       mediaRecorder.start();
       setIsRecording(true);
       setQuery("Recording...");
@@ -111,7 +136,6 @@ export const ChatSection = () => {
       console.error('Error accessing microphone:', error);
     }
   };
-
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
@@ -119,7 +143,6 @@ export const ChatSection = () => {
       setQuery("");
     }
   };
-
   const handleAudioInputToggle = () => {
     if (isRecording) {
       stopRecording();
@@ -127,12 +150,10 @@ export const ChatSection = () => {
       startRecording();
     }
   };
-
   const handleAudioStop = async (audioBlob: Blob) => {
     const fileExt = 'webm';
     const fileName = `${Math.random()}.${fileExt}`;
     const filePath = `${fileName}`;
-
     try {
       const { data, error } = await supabase.storage
         .from("gcaudios")
@@ -140,16 +161,12 @@ export const ChatSection = () => {
           cacheControl: '3600',
           upsert: false,
         });
-
       if (error) throw error;
-
       const { data: { publicUrl } } = supabase.storage
         .from('gcaudios')
         .getPublicUrl(filePath);
-
       console.log('Uploaded to:', publicUrl);
       setUrl(publicUrl);
-      
       const audioMessage: Message = {
         message: `Audio uploaded`,
         isUser: true,
@@ -160,7 +177,6 @@ export const ChatSection = () => {
       console.error('Error uploading audio:', error);
     }
   };
-
   return (
     <div id="chat" className="chat flex flex-col bg-neutral-900 p-4 h-full">
       <div
@@ -176,7 +192,6 @@ export const ChatSection = () => {
           />
         ))}
       </div>
-
       <div className="flex gap-2">
         <Input
           id="chat_prompt"
@@ -198,7 +213,6 @@ export const ChatSection = () => {
           <ChevronRight />
         </Button>
         <Button
-
           className="mic_btn"
           size="icon"
           variant={!isRecording ? "destructive" : "default"}
