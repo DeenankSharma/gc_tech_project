@@ -1,16 +1,18 @@
 version : "3.8"
 
 services:
-  # backend:
-  #   build:
-  #     context: .
-  #     dockerfile: backend/Dockerfile
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - auth
-  #   networks:
-  #     - mynetwork
+  backend:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - auth
+    networks:
+      - mynetwork
+    env_file:
+      - ./agent/.env
   frontend:
     build:
       context: ./frontend
@@ -19,6 +21,7 @@ services:
       - "5173:80"
     depends_on:
       - auth
+      - backend
     networks:
       - mynetwork
     env_file:
