@@ -301,48 +301,44 @@ def extract_player_teams(soup: BeautifulSoup) -> List[str]:
 
 def display_player_info(player_info: Dict[str, str]) -> None:
     """
-    Display formatted player information.
-    
+    Save formatted player information to a file.
+
     Args:
         player_info (Dict[str, str]): Dictionary containing player details
     """
-    print("\n" + "="*50)
-    print(f"PLAYER INFORMATION")
-    print("="*50)
-    
-    # Display basic information
-    print(f"Full Name: {player_info['full_name']}")
+    lines = []
+    lines.append("=" * 50)
+    lines.append("PLAYER INFORMATION")
+    lines.append("=" * 50)
+    lines.append(f"Full Name: {player_info['full_name']}")
+
     if player_info['age']:
-        print(f"Age: {player_info['age']}")
+        lines.append(f"Age: {player_info['age']}")
     if player_info['born']:
-        print(f"Born: {player_info['born']}")
-    
-    # Display cricket-specific details
-    if player_info['playing_role']:
-        print(f"Playing Role: {player_info['playing_role']}")
+        lines.append(f"Born: {player_info['born']}")
     if player_info['batting_style']:
-        print(f"Batting Style: {player_info['batting_style']}")
+        lines.append(f"Batting Style: {player_info['batting_style']}")
     if player_info['bowling_style']:
-        print(f"Bowling Style: {player_info['bowling_style']}")
+        lines.append(f"Bowling Style: {player_info['bowling_style']}")
+    if player_info['playing_role']:
+        lines.append(f"Playing Role: {player_info['playing_role']}")
     if player_info['fielding_position']:
-        print(f"Fielding Position: {player_info['fielding_position']}")
-    
-    # Display teams
-    if player_info['teams']:
-        print("\nTeams:")
-        for team in player_info['teams']:
-            print(f"- {team}")
-    
-    # Display bio if available
+        lines.append(f"Fielding Position: {player_info['fielding_position']}")
     if player_info['bio']:
-        print("\nBio:")
-        print(player_info['bio'])
-    
-    # Display image URL if available
+        lines.append("\nBio:")
+        lines.append(player_info['bio'])
+    if player_info['teams']:
+        lines.append("\nTeams:")
+        for team in player_info['teams']:
+            lines.append(f"- {team}")
     if player_info['image_url']:
-        print(f"\nProfile Image: {player_info['image_url']}")
-    
-    print("="*50 + "\n")
+        lines.append(f"\nImage URL: {player_info['image_url']}")
+
+    # Write to file
+    with open("player_info.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+    print("Player information saved to player_info.txt")
 
 
 def get_cricket_player_info(player_name: str) -> Optional[Dict[str, str]]:
@@ -379,15 +375,18 @@ def get_cricket_player_info(player_name: str) -> Optional[Dict[str, str]]:
         print(f"Error getting player info: {e}")
         return None
 
-
-if __name__ == "__main__":
-    # Example usage
-    player_name = "Virat Kohli"
+def player_info_api(player_name):
     print(f"Searching for information about {player_name}...")
     
     player_info = get_cricket_player_info(player_name)
     
     if player_info:
         display_player_info(player_info)
+        
     else:
         print(f"Could not retrieve information for {player_name}")
+
+# if __name__ == "__main__":
+#     player_info_api()
+#     # Example usage
+#     player_name = "Virat Kohli"

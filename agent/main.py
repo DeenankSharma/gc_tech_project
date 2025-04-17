@@ -1,6 +1,7 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify,request
 import subprocess
 import atexit
+from scrapers.scraper import player_info_api
 
 app = Flask(__name__)
 
@@ -49,7 +50,18 @@ def live_commentary():
             return f.read() or "No commentary yet"
     except FileNotFoundError:
         return jsonify({"error": "Commentary not yet available"}), 404
+    
+@app.route('/player_info')
+def player_info():
+    try:
+        player_name=request.args.get('player_name')
+        player_info_api(player_name)
+        with open("player_info.txt","r") as f:
+            data=f.read()
+        return data
+    except Exception:
+        return jsonify({"error":"Could not fetch player details"}), 400
 
 if __name__ == '__main__':
-    start_all_pipelines()  
+    # start_all_pipelines()  
     app.run(debug=True)
