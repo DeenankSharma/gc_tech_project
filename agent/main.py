@@ -1,7 +1,7 @@
 from flask import Flask, jsonify,request
 import subprocess
 import atexit
-from scrapers.scraper import player_info_api
+from scrapers.agent import player_info_api
 
 app = Flask(__name__)
 
@@ -55,13 +55,12 @@ def live_commentary():
 def player_info():
     try:
         player_name=request.args.get('player_name')
-        player_info_api(player_name)
-        with open("player_info.txt","r") as f:
-            data=f.read()
-        return data
+        result=player_info_api(player_name)
+        return jsonify(result)
+    
     except Exception:
         return jsonify({"error":"Could not fetch player details"}), 400
 
 if __name__ == '__main__':
-    # start_all_pipelines()  
+    start_all_pipelines()  
     app.run(debug=True)
