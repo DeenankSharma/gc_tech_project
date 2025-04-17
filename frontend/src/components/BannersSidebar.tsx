@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../public/styles/BannersSidebar.css";
-import { Bell, X } from "lucide-react";
+import { Bell } from "lucide-react";
 import { Banner } from "@/types/types";
 import { ExpandableBanner } from "../components/Banner.tsx";
 
@@ -33,9 +33,9 @@ export const BannersSidebar: React.FC = () => {
     }
   ]);
 
-  const handleCloseBanner = (bannerId: string) => {
-    setBanners(banners.filter(banner => banner.id !== bannerId));
-  };
+  // const handleCloseBanner = (bannerId: string) => {
+  //   setBanners(banners.filter(banner => banner.id !== bannerId));
+  // };
 
   return (
     <div id="bannersSB" className="bannersSB flex flex-col bg-neutral-900 p-4 space-y-4 overflow-auto">
