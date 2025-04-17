@@ -6,7 +6,7 @@ import requests
 from dotenv import load_dotenv
 from supabase import create_client,Client
 from scrapers.agent import player_info_api
-from speech_to_text.speech_to_text import speech_to_text
+from speech_to_text.speech_to_text import speech_to_text_api
 load_dotenv()
 app = Flask(__name__)
 
@@ -75,14 +75,14 @@ def speech_to_text():
     try:
         audio_url=request.args.get('audio_url')
         response = requests.get(audio_url)
-        with open("audio.mp3", 'wb') as file:
+        with open("audio.webm", 'wb') as file:
             file.write(response.content)
-            result=speech_to_text()
+            result=speech_to_text_api("audio.webm")
         return result
         
-    except Exception:
-        return jsonify({"error":"Could not convert speech to text"}), 400
+    except Exception as e:
+        return jsonify({"error":f"Could not convert speech to text. Error:{e}"}), 400
            
 if __name__ == '__main__':
-    start_all_pipelines()  
+    # start_all_pipelines()  
     app.run(debug=True)
