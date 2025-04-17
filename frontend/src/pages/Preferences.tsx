@@ -78,8 +78,6 @@ export default function Preferences() {
 
 
   useEffect(() => {
-    console.log("pyaaz kachori khaani hai")
-    console.log(isAuthenticated)
     if(isAuthenticated === true && preference === null){
       console.log("User is authenticated and preferences are null, fetching preferences.");
       const response = fetchPreferences(user!);
@@ -95,7 +93,6 @@ export default function Preferences() {
         } else {
           console.log("Preferences found:", data);
           console.log("Preferences found:", data);
-          console.log(JSON.stringify(data));
           localStorage.setItem('preferences', JSON.stringify(data));
           setPreference(true);
           navigate('/chat');
