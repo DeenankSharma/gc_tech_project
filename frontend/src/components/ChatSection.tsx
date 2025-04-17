@@ -1,10 +1,7 @@
 import "../../public/styles/ChatSection.css"
 import Input from '@mui/joy/Input';
-// import IconButton from '@mui/joy/IconButton';
 import { ChevronRight } from "lucide-react"
 import { Button } from "../components/ui/button"
-import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
 import { useState } from "react";
 
 export const ChatSection = () =>{

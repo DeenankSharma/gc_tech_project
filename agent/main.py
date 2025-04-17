@@ -1,11 +1,20 @@
 from flask import Flask, jsonify,request
 import subprocess
 import atexit
+import os
+import requests
+from dotenv import load_dotenv
+from supabase import create_client,Client
 from scrapers.agent import player_info_api
-
+from speech_to_text.speech_to_text import speech_to_text
+load_dotenv()
 app = Flask(__name__)
 
 processes = {}
+
+supabase_url = os.getenv('SUPABASE_URL')
+supabase_anon_key = os.getenv('SUPABASE_ANON_KEY')
+client:Client = create_client(supabase_url, supabase_anon_key)
 
 def start_pipeline(name, script_path):
     if name not in processes or processes[name].poll() is not None:
@@ -61,6 +70,19 @@ def player_info():
     except Exception:
         return jsonify({"error":"Could not fetch player details"}), 400
 
+@app.route('/speech_to_text')
+def speech_to_text():
+    try:
+        audio_url=request.args.get('audio_url')
+        response = requests.get(audio_url)
+        with open("audio.mp3", 'wb') as file:
+            file.write(response.content)
+            result=speech_to_text()
+        return result
+        
+    except Exception:
+        return jsonify({"error":"Could not convert speech to text"}), 400
+           
 if __name__ == '__main__':
     start_all_pipelines()  
     app.run(debug=True)
