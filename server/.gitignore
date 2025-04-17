@@ -13,3 +13,5 @@ venv
 *.txt
 *.csv
 *.webm
+
+*.venv
