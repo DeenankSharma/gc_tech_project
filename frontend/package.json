@@ -13,6 +13,8 @@
     "@auth0/auth0-react": "^2.3.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@google/genai": "^0.8.0",
+    "@google/generative-ai": "^0.24.0",
     "@mui/joy": "^5.0.0-beta.52",
     "@radix-ui/react-slot": "^1.2.0",
     "@tailwindcss/vite": "^4.1.3",
