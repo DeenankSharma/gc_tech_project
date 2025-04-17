@@ -103,3 +103,37 @@ def cricket_live_commentary_pipeline(
         print(f"Commentary written to {output_file}")
     else:
         print("No commentary fetched.")
+
+def cricket_live_commentary_pipeline_api(
+    root_url: str = "https://www.cricbuzz.com/cricket-match/live-scores",
+    output_file: str = "cricbuzz_commentary.txt"
+)->None:
+    """
+    Run a pipeline to fetch and save live cricket match commentary.
+    
+    This function extracts ball-by-ball commentary from an active cricket match
+    on Cricbuzz and writes it to a text file. It handles the entire process from
+    finding active matches to saving the commentary text.
+    
+    Args:
+        root_url (str, optional): URL of the cricket website's live scores page.
+            Defaults to "https://www.cricbuzz.com/cricket-match/live-scores".
+        output_file (str, optional): Path to the output text file where commentary
+            will be saved. Defaults to "cricbuzz_commentary.txt".
+    
+    Returns:
+        None: The function either writes commentary to the specified file or
+              prints a message if no commentary is available.
+    """
+    commentary_list = fetch_commentary(root_url)
+        
+    if commentary_list:
+        with open(output_file, "w", encoding="utf-8") as f:
+            for line in commentary_list:
+                f.write(line + "\n")
+        print(f"Commentary written to {output_file}")
+    else:
+        print("No commentary fetched.")
+
+if __name__=="__main__":
+    cricket_live_commentary_pipeline_api()
