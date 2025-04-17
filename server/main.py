@@ -5,7 +5,8 @@ import atexit
 import os
 import requests
 from dotenv import load_dotenv
-from supabase import create_client,Client
+# from supabase import create_client,Client
+from database.mongodb_functions import get_all_chat_sessions,get_title_from_db,get_messages_from_db,store_message_from_db
 from scrapers.agent import player_info_api
 from speech_to_text.speech_to_text import speech_to_text_api
 load_dotenv()
@@ -15,7 +16,7 @@ processes = {}
 
 supabase_url = os.getenv('SUPABASE_URL')
 supabase_anon_key = os.getenv('SUPABASE_ANON_KEY')
-client:Client = create_client(supabase_url, supabase_anon_key)
+# client:Client = create_client(supabase_url, supabase_anon_key)
 
 def start_pipeline(name, script_path):
     if name not in processes or processes[name].poll() is not None:
@@ -84,6 +85,49 @@ def speech_to_text():
     except Exception as e:
         return jsonify({"error":f"Could not convert speech to text. Error:{e}"}), 400
            
+           
+@app.route('/api/messages', methods=['POST'])
+def add_message():
+    data = request.json
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    
+    email = data.get('email')
+    message = data.get('message')
+    is_user = data.get('isUser', True)
+    title = data.get('title')
+    
+    if not email or not message:
+        return jsonify({"error": "Email and message are required"}), 400
+    
+    success = store_message_from_db(email, message, is_user, title)
+    
+    if success:
+        return jsonify({"success": True}), 201
+    else:
+        return jsonify({"error": "Failed to store message"}), 500
+
+@app.route('/api/messages/<email>', methods=['GET'])
+def get_messages(email):
+    messages = get_messages_from_db(email)
+    return jsonify({"email": email, "messages": messages})
+
+@app.route('/api/title/<email>', methods=['GET'])
+def get_title(email):
+    title = get_title_from_db(email)
+    if title:
+        return jsonify({"email": email, "title": title})
+    else:
+        return jsonify({"error": "No title found for this email"}), 404
+
+@app.route('/api/chats', methods=['GET'])
+def get_all_chats():
+    chats = get_all_chat_sessions()
+    for chat in chats:
+        if '_id' in chat:
+            chat['_id'] = str(chat['_id'])
+    return jsonify({"chats": chats})
+
 if __name__ == '__main__':
     start_all_pipelines()  
     app.run(debug=True)
