@@ -28,7 +28,7 @@ export function ExpandableBanner({ title, description}: BannerProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="flex items-center space-x-2">
-        <h3 className="text-white font-bold text-l">{title}</h3>
+        <h3 className="text-white font-bold text-l whitespace-pre">{title}</h3>
       </div>
       <p className={`text-sm  text-white/80 mt-2 transition-all duration-300 ${isHovered ? 'opacity-100 max-h-40' : 'opacity-70 max-h-20 truncate'}`}>
         {description}

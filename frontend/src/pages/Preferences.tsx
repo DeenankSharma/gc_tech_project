@@ -98,7 +98,7 @@ export default function Preferences() {
           console.log(JSON.stringify(data));
           localStorage.setItem('preferences', JSON.stringify(data));
           setPreference(true);
-          navigate('/chat');
+          // navigate('/chat');
 
         }
       });
@@ -107,11 +107,11 @@ export default function Preferences() {
       navigate('/preferences');
     } else if(isAuthenticated === true && preference === true){
       console.log("User is authenticated and preferences are set, redirecting to chat page.");
-      navigate('/chat');
+      // navigate('/chat');
     }
     else{
       console.log("User is not authenticated, redirecting to auth page.");
-      navigate('/');
+      // navigate('/');
     }
   }, []);
 

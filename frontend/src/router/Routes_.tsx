@@ -5,8 +5,9 @@ import Preferences from "../pages/Preferences.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import { usePreference } from "../hooks/preferenceContext.tsx";
 import { Navigate } from "react-router-dom";
-// import PlayerStatsTable from "../components/Stat_table.tsx";
+import PlayerStatsTable from "../components/Stat_table.tsx";
 import LiveMatchBanner from "../components/LivematchBanners.tsx";
+import CricketStandings from "../components/Points_Table.tsx";
 
 export const Routes_ = () => {
 
@@ -18,9 +19,10 @@ export const Routes_ = () => {
     <Routes>
       <Route path="/" element={isAuthenticated ? <Navigate to="/login"/> : <AuthPage />} />
       <Route path="/chat" element={isAuthenticated  ? <ChatPage /> : <AuthPage />} />
-      <Route path="/preferences" element={!isAuthenticated ?  <AuthPage/>:!preference || preference==null ? <Preferences/>:<ChatPage/>} />
-      <Route path="/login" element={!isAuthenticated ? <AuthPage/>: preference==true ? <ChatPage/> : <Preferences/> } /> 
-      <Route path="/player_stats" element={
+      <Route path="/preferences" element={<Preferences/>} />
+      <Route path="/login" element={!isAuthenticated ? <AuthPage/>: preference==true ? <ChatPage/> : <Preferences/> } />
+      <Route path="/player_stats" element={<PlayerStatsTable/>} />
+      <Route path="/live_match" element={
   <LiveMatchBanner 
     teamA={{
       name: "Team A",
@@ -41,6 +43,7 @@ export const Routes_ = () => {
     isLive={true}
   />
 } />
+      <Route path="/points_table" element={<CricketStandings/>} />
     </Routes>
     </BrowserRouter>)
 }

@@ -9,7 +9,7 @@ export const BannersSidebar: React.FC = () => {
     {
       id: "banner1",
       type: "promo",
-      title: "SRH vs MI",
+      title: "SRH vs MI  SRH:162-5 (20.0)  MI:158-6 (17.2)",
       message: "Get live updates on the match between SRH and MI.",
     },
     {
@@ -24,13 +24,6 @@ export const BannersSidebar: React.FC = () => {
       title: "Reaction of Preity Zinta on PBKS win",
       message: "Preity Zinta shares her thoughts on PBKS's recent victory.",
     },
-    {
-      id: "banner4",
-      type: "info",
-      title: "Product Tour",
-      message: "Discover new features with our interactive product tour.",
-      actionText: "Start Tour"
-    }
   ]);
 
   // const handleCloseBanner = (bannerId: string) => {
@@ -71,7 +64,6 @@ export const BannersSidebar: React.FC = () => {
                 <ExpandableBanner
                   title={banner.title}
                   description={banner.message}
-                
                 />
                 
               </div>

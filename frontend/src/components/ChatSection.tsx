@@ -2,11 +2,14 @@ import "../../public/styles/ChatSection.css"
 import Input from '@mui/joy/Input';
 // import IconButton from '@mui/joy/IconButton';
 import { ChevronRight } from "lucide-react"
+import {useAppStore} from "../../store/store"
 
 import { Button } from "../components/ui/button"
 // import PlayerStatsChart from "./stat_table";
 
 export const ChatSection = () =>{
+  const {selectedChatData, setSelectedChatData, setSelectedChatMessages,selectedChatMessages,addMessages} = useAppStore()
+
   return(
     <div id="chat" className="chat flex flex-col bg-neutral-900 p-4">
       <div className="flex gap-2 ">
